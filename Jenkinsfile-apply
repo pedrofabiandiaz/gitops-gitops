@@ -8,7 +8,7 @@ pipeline {
   agent {
     node {
       label 'nodejs'
-      }
+    }
   }
   stages {
     stage ('Validate configuration resources') {
@@ -17,14 +17,12 @@ pipeline {
       }
     }
     stage ('Apply resources') {
+      when {
+        branch 'master'
+      }
       steps {
-        when {
-          branch 'master'
-        }
-        steps {
-          sh 'oc apply -k config'
-          sh './wait-oauth.sh'
-        }
+        sh 'oc apply -k config'
+        sh './wait_oauth.sh'
       }
     }
     stage ('Verify test user') {
